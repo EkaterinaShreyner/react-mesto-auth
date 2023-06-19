@@ -1,7 +1,9 @@
 import React from 'react';
 import logo from '../image/Vector.svg';
+import { Link, Route, Routes } from 'react-router-dom';
 
-function Header() {
+
+function Header(props) {
   return (
     <header className="header">
         <img 
@@ -9,7 +11,30 @@ function Header() {
           className="header__logo"
           alt="Логотип проекта место" 
         />
-      </header>
+      <Routes>
+        <Route 
+          path="/sign-up"
+          element={
+            <Link className="header__button" to="/sign-in">Войти</Link>
+          }
+        />
+        <Route
+          path="/sign-in"
+          element={
+            <Link className="header__button" to="/sign-up">Регистрация</Link>
+          }
+        />
+        <Route
+          path="/"
+          element={
+            <>
+              <p className="header__imail">kkk@mail.ru</p>
+              <Link className="header__button header__button_type_exit" to="/sign-in">Выйти</Link>
+            </>
+          }
+        />
+      </Routes>
+    </header>
   );
 }
 

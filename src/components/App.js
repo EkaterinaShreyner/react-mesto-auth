@@ -8,10 +8,12 @@ import EditProfilePopup from "./EditProfilePopup.js";
 import EditAvatarPopup from "./EditAvatarPopup.js";
 import PopupConfirm from "./PopupConfirm.js";
 import AddPlacePopup from "./AddPlacePopup.js";
+import InfoTooltip from "./InfoTolltip.js";
 import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import Register from "./Register.js";
 import Login from "./Login.js";
+import ProtectedRoute from "./ProtectedRoute.js";
 
 
 function App() {
@@ -24,6 +26,7 @@ function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isPopupConfirmOpen, setIsPopupConfirmOpen] = useState(false);
+  const [isPopupTooltip, setIsPopupTooltip] =useState(false);
 
   // выбранная карточка
   const [selectedCard, setSelectedCard] = useState(null);
@@ -70,6 +73,7 @@ function App() {
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
     setIsPopupConfirmOpen(false)
+    setIsPopupTooltip(false)
     setSelectedCard(null);
   }
 
@@ -164,23 +168,42 @@ function App() {
     <div className="root">
       <div className="page">
         <CurrentUserContext.Provider value={currentUser}>
-          <Header />
+          <Header 
+          isLoggedIn={isLoggedIn}/>
           <Routes>
             <Route path="/sign-up" element={<Register />} />
             <Route path="/sign-in" element={<Login />} />
             <Route path="/" 
+
+              // element={
+              //   <>
+              //   <Main  
+              //     onEditProfile={handleEditProfileClick}
+              //     onAddPlace={handleAddPlaceClick}
+              //     onEditAvatar={handleEditAvatarClick}
+              //     onCardClick={handleCardClick}
+              //     cards={cards}
+              //     onCardLike={handleCardLike}
+              //     onCardDelete={handleCardDelete}
+              //   />
+              //   <Footer />
+              //   </>
+              // }
+
               element={
                 <>
-                <Main  
-                  onEditProfile={handleEditProfileClick}
-                  onAddPlace={handleAddPlaceClick}
-                  onEditAvatar={handleEditAvatarClick}
-                  onCardClick={handleCardClick}
-                  cards={cards}
-                  onCardLike={handleCardLike}
-                  onCardDelete={handleCardDelete}
-                />
-                <Footer />
+                  <ProtectedRoute 
+                    element={Main}
+                    isLoggedIn={isLoggedIn}
+                    onEditProfile={handleEditProfileClick}
+                    onAddPlace={handleAddPlaceClick}
+                    onEditAvatar={handleEditAvatarClick}
+                    onCardClick={handleCardClick}
+                    cards={cards}
+                    onCardLike={handleCardLike}
+                    onCardDelete={handleCardDelete}
+                  />
+                  <Footer />
                 </>
               }
             />
@@ -226,6 +249,10 @@ function App() {
             card={selectedCard}
             onClose={closeAllPopups}
             closeOverlay={setSelectedCard}
+          />
+          <InfoTooltip
+          isOpen={isPopupTooltip}
+          onClose={closeAllPopups}
           />
         </CurrentUserContext.Provider>
       </div>
