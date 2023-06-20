@@ -9,7 +9,7 @@ export const register = (email, password) => {
     },
     body: JSON.stringify({email, password})
   })
-  .then((res) => res.ok ? res.json : Promise.reject(`Ошибка: ${res.status}`));
+  .then((res) => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`));
 }
 
 export const authorize = (email, password) => {
@@ -21,10 +21,10 @@ export const authorize = (email, password) => {
     },
     body: JSON.stringify({email, password})
   })
-  .then((res) => res.ok ? res.json : Promise.reject(`Ошибка: ${res.status}`));
+  .then((res) => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`));
 }
 
-export const checkToken = (token) => {
+export const getContent = (token) => {
   return fetch(`${BASE_URL}/users/me`, {
     method: 'GET',
     headers: {
@@ -32,5 +32,5 @@ export const checkToken = (token) => {
       "Authorization" : `Bearer ${token}`
     }
   })
-  .then((res) => res.ok ? res.json : Promise.reject(`Ошибка: ${res.status}`));
+  .then((res) => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`));
 }

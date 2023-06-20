@@ -8,18 +8,21 @@ import EditProfilePopup from "./EditProfilePopup.js";
 import EditAvatarPopup from "./EditAvatarPopup.js";
 import PopupConfirm from "./PopupConfirm.js";
 import AddPlacePopup from "./AddPlacePopup.js";
-import InfoTooltip from "./InfoTolltip.js";
+import InfoTooltip from "./InfoTooltip.js";
 import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import Register from "./Register.js";
 import Login from "./Login.js";
 import ProtectedRoute from "./ProtectedRoute.js";
+import * as mestoAuth from "../utils/MestoAuth.js";
+import Loading from "./Loading.js";
 
 
 function App() {
 
   // авторизованный пользователь
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(null);
+  
 
   // попапы
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -55,6 +58,38 @@ function App() {
   }, []);
 
   const navigate = useNavigate();
+
+  // проверка валидности токена
+  function checkToken() {
+    // if (localStorage.getItem("token")) {
+    //   const token = localStorage.getItem("token");
+    //   mestoAuth.getContent(token)
+    const token = localStorage.getItem("token");
+    mestoAuth.getContent(token)
+      .then((res) => {
+        console.log(res)
+        if (res) {
+          setIsLoggedIn(true);
+          navigate("/")
+        }
+        return;
+      })
+      .catch((err) => {
+        console.error(`Ошибка валидности токена: ${err}`)
+        setIsLoggedIn(false)
+      })
+    // }
+  }
+
+  // срабатывает функция проверка токена единыжды при отрисовки компонента App
+  useEffect(() => {
+    checkToken();
+  }, []);
+
+  // Если токен еще не прошел проверку, при перезагрузке страницы отрисовыввется компонент Loading
+  if (isLoggedIn === null) {
+    return <Loading />
+  }
 
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(true);
@@ -168,11 +203,18 @@ function App() {
     <div className="root">
       <div className="page">
         <CurrentUserContext.Provider value={currentUser}>
-          <Header 
-          isLoggedIn={isLoggedIn}/>
+          <Header
+            isLoggedIn={isLoggedIn}/>
           <Routes>
             <Route path="/sign-up" element={<Register />} />
-            <Route path="/sign-in" element={<Login />} />
+            <Route 
+              path="/sign-in"
+              element={
+                <Login
+                  handleLogin={() => setIsLoggedIn(true)}
+                />
+              }
+            />
             <Route path="/" 
 
               // element={

@@ -12,12 +12,13 @@ const popupOpened = props.isOpen ? "popup_opened" : "";
           type="button"
           onClick={props.onClose}
         ></button>
-        <img />
-        <p className="popup__message">
-          {}
-        </p>
+        <div className="popup__tooltip">
+          <img />
+          <p className="popup__message">
+            Успешно
+          </p>
+        </div>
       </div>
-      
     </section>
   )
 }

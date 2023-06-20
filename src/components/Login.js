@@ -2,9 +2,8 @@ import React from "react";
 import { useState } from "react";
 import * as mestoAuth from "../utils/MestoAuth.js"
 import { useNavigate } from "react-router-dom";
-// import AuthForm from "./AuthForm";
 
-function Login() {
+function Login(props) {
 
   const [formValue, setFormValue] = useState({
     email: "",
@@ -23,12 +22,14 @@ function Login() {
 
   function handleSubmit(evt) {
     evt.preventDefault();
+    props.handleLogin();
     const {email, password} = formValue;
     mestoAuth.authorize(email, password)
       .then((res) => {
-        console.log(res);
-        localStorage.setItem('token', res.token);
-        navigate('/', {replace: true})
+        localStorage.setItem("token", res.token);
+        console.log(res.token)
+        props.handleLogin();   
+        navigate("/");
       })
       .catch((err) => {
         console.error(`Ошибка авторизации: ${err}`)
@@ -36,14 +37,6 @@ function Login() {
   }
 
   return(
-    // <div className="auth">
-    //   <AuthForm
-    //     title="Вход"
-    //     form="form-login"
-    //     buttonText="Войти"
-    //     onSubmit={handleSubmit}
-    //   />
-    // </div>
     <div className="auth">
       <form className="auth__form" name="form-register" onSubmit={handleSubmit}>
         <h2 className="auth__title">Вход</h2>

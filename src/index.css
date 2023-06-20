@@ -42,6 +42,7 @@
 @import url(./blocks/popup/__image-full/popup__image-full.css);
 @import url(./blocks/popup/__title/_image/popup__title_image-full.css);
 @import url(./blocks/popup/_image/popup_image.css);
+@import url(./blocks/popup/__tooltip/popup__tooltip.css);
 @import url(./blocks/auth/auth.css);
 @import url(./blocks/auth/__title/auth__title.css);
 @import url(./blocks/auth/__form/auth__form.css);
@@ -49,3 +50,4 @@
 @import url(./blocks/auth/__button/auth__button.css);
 @import url(./blocks/auth/__confirm/auth__confirm.css);
 @import url(./blocks/auth/__link/auth__link.css);
+@import url(./blocks/loading/__text/loading__text.css);

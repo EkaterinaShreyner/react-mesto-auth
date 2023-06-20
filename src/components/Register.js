@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import * as mestoAuth from "../utils/MestoAuth.js";
-import InfoTooltip from "./InfoTolltip.js";
+import InfoTooltip from "./InfoTooltip.js";
 
 function Register(props) {
 
