@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import * as mestoAuth from "../utils/MestoAuth.js";
 import InfoTooltip from "./InfoTooltip.js";
+import icon from "../image/icon.svg";
 
 function Register(props) {
 
@@ -9,6 +10,8 @@ function Register(props) {
     email: "",
     password: ""
   });
+
+  const [isPopupTooltip, setIsPopupTooltip] = useState(false);
 
   const navigate = useNavigate();
 
@@ -25,7 +28,7 @@ function Register(props) {
     const {email, password} = formValue;
     mestoAuth.register(email, password)
       .then((res) => {
-      // props.isPopupTooltip;
+        setIsPopupTooltip(true)
         navigate('/sign-in', {replace: true});
         console.log(res);
       })
@@ -33,22 +36,7 @@ function Register(props) {
         console.error(`Ошибка регистрации: ${err}`)
       })
   }
-
-  // return (
-  //   <div className="auth">
-  //     <AuthForm
-  //       title="Регистрация"
-  //       form="form-register"
-  //       buttonText="Зарегистрироваться"
-  //       onSubmit={handleSubmit}
-  //     />
-      // <p className="auth__confirm">
-      //   Уже зарегистрированы?{" "}
-      //   <Link className="auth__link" to="/sign-in">Войти</Link>
-      // </p>
-  //   </div>
-  // );
-
+  
   return(
     <>
       <div className="auth">
@@ -85,6 +73,11 @@ function Register(props) {
           Уже зарегистрированы?{" "}
           <Link className="auth__link" to="/sign-in">Войти</Link>
         </p>
+        <InfoTooltip
+          response="Вы успешно зарегистрировались"
+          image={icon}
+          isOpen={isPopupTooltip}
+        />
     </div>
   </>
   )

@@ -15,7 +15,7 @@ import Register from "./Register.js";
 import Login from "./Login.js";
 import ProtectedRoute from "./ProtectedRoute.js";
 import * as mestoAuth from "../utils/MestoAuth.js";
-import Loading from "./Loading.js";
+// import Loading from "./Loading.js";
 
 
 function App() {
@@ -23,7 +23,6 @@ function App() {
   // авторизованный пользователь
   const [isLoggedIn, setIsLoggedIn] = useState(null);
   
-
   // попапы
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
@@ -36,6 +35,7 @@ function App() {
 
   // данные пользователя
   const [currentUser, setCurrentUser] = useState({});
+  const [userEmail, setUserEmail] = useState();
 
   // массив карточек
   const [cards, setCards] = useState([]);
@@ -59,16 +59,17 @@ function App() {
 
   const navigate = useNavigate();
 
-  // проверка валидности токена
+  // запрос на проверку валидности токена
   function checkToken() {
-    // if (localStorage.getItem("token")) {
-    //   const token = localStorage.getItem("token");
-    //   mestoAuth.getContent(token)
-    const token = localStorage.getItem("token");
-    mestoAuth.getContent(token)
+    if (localStorage.getItem("token")) {
+      const token = localStorage.getItem("token");
+      mestoAuth.getContent(token)
+    // const token = localStorage.getItem("token");
+    // mestoAuth.getContent(token)
       .then((res) => {
         console.log(res)
         if (res) {
+          setUserEmail(res.data.email) // получаем значение переменной состояния после сабмита
           setIsLoggedIn(true);
           navigate("/")
         }
@@ -78,7 +79,7 @@ function App() {
         console.error(`Ошибка валидности токена: ${err}`)
         setIsLoggedIn(false)
       })
-    // }
+    }
   }
 
   // срабатывает функция проверка токена единыжды при отрисовки компонента App
@@ -87,8 +88,15 @@ function App() {
   }, []);
 
   // Если токен еще не прошел проверку, при перезагрузке страницы отрисовыввется компонент Loading
-  if (isLoggedIn === null) {
-    return <Loading />
+  // if (isLoggedIn === null) {
+  //   return <Loading />
+  // }
+
+  function handleExit() {
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
+    setUserEmail();
+    navigate("/sign-in", {replace: true})
   }
 
   function handleEditProfileClick() {
@@ -204,7 +212,10 @@ function App() {
       <div className="page">
         <CurrentUserContext.Provider value={currentUser}>
           <Header
-            isLoggedIn={isLoggedIn}/>
+            isLoggedIn={isLoggedIn}
+            userEmail={userEmail}
+            onExit={handleExit}
+          />
           <Routes>
             <Route path="/sign-up" element={<Register />} />
             <Route 
@@ -216,22 +227,6 @@ function App() {
               }
             />
             <Route path="/" 
-
-              // element={
-              //   <>
-              //   <Main  
-              //     onEditProfile={handleEditProfileClick}
-              //     onAddPlace={handleAddPlaceClick}
-              //     onEditAvatar={handleEditAvatarClick}
-              //     onCardClick={handleCardClick}
-              //     cards={cards}
-              //     onCardLike={handleCardLike}
-              //     onCardDelete={handleCardDelete}
-              //   />
-              //   <Footer />
-              //   </>
-              // }
-
               element={
                 <>
                   <ProtectedRoute 
@@ -250,16 +245,6 @@ function App() {
               }
             />
           </Routes>
-          {/* <Main
-            onEditProfile={handleEditProfileClick}
-            onAddPlace={handleAddPlaceClick}
-            onEditAvatar={handleEditAvatarClick}
-            onCardClick={handleCardClick}
-            cards={cards}
-            onCardLike={handleCardLike}
-            onCardDelete={handleCardDelete}
-          /> */}
-          {/* <Footer /> */}
           <EditProfilePopup
             isOpen={isEditProfilePopupOpen}
             onClose={closeAllPopups}
@@ -303,3 +288,18 @@ function App() {
 }
 
 export default App;
+
+// element={
+              //   <>
+              //   <Main  
+              //     onEditProfile={handleEditProfileClick}
+              //     onAddPlace={handleAddPlaceClick}
+              //     onEditAvatar={handleEditAvatarClick}
+              //     onCardClick={handleCardClick}
+              //     cards={cards}
+              //     onCardLike={handleCardLike}
+              //     onCardDelete={handleCardDelete}
+              //   />
+              //   <Footer />
+              //   </>
+              // }

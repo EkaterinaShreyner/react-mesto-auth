@@ -4,6 +4,11 @@ import { Link, Route, Routes } from 'react-router-dom';
 
 
 function Header(props) {
+
+  function handleExit() {
+    props.onExit();
+  }
+
   return (
     <header className="header">
         <img 
@@ -27,10 +32,18 @@ function Header(props) {
         <Route
           path="/"
           element={
-            <>
-              <p className="header__imail">kkk@mail.ru</p>
-              <Link className="header__button header__button_type_exit" to="/sign-in">Выйти</Link>
-            </>
+            <div className="header__container">
+              <p className="header__imail">{props.userEmail}</p>
+              {/* <Link className="header__button header__button_type_exit" onClick={handleExit} to="/sign-in">Выйти</Link> */}
+              <Link
+                className="header__button header__button_type_exit"
+                type="button"
+                onClick={handleExit}
+                to="sign-in"
+              >
+                Выйти
+              </Link>
+            </div>
           }
         />
       </Routes>

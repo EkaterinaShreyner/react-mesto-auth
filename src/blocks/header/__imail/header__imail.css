@@ -6,3 +6,9 @@
   color: #FFF;
   margin: 0;
 }
+
+@media screen and (max-width: 460px) {
+  .header__imail {
+    display: none;
+  }
+}
