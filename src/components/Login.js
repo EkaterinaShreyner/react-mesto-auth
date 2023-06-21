@@ -20,7 +20,7 @@ function Login(props) {
     })
   }
 
-  function handleSubmit(evt) {
+  function onLogin(evt) {
     evt.preventDefault();
     props.handleLogin();
     const {email, password} = formValue;
@@ -30,6 +30,7 @@ function Login(props) {
         console.log(res.token)
         props.handleLogin();   
         navigate("/");
+        window.location.reload();
       })
       .catch((err) => {
         console.error(`Ошибка авторизации: ${err}`)
@@ -38,7 +39,7 @@ function Login(props) {
 
   return(
     <div className="auth">
-      <form className="auth__form" name="form-register" onSubmit={handleSubmit}>
+      <form className="auth__form" name="form-register" onSubmit={onLogin}>
         <h2 className="auth__title">Вход</h2>
         <input
           className="auth__input"

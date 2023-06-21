@@ -16,7 +16,7 @@ const popupOpened = props.isOpen ? "popup_opened" : "";
           <img
             className="popup__tooltip-image"
             src={props.image} 
-            alt={props.response}
+            alt={props.alt}
           />
           <p className="popup__tooltip-message">
             {props.response}

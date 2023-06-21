@@ -3,3 +3,9 @@
   min-width: 80px;
   gap: 24px;
 }
+
+@media screen and (max-width: 460px) {
+  .header__container {
+    display: none;
+  }
+}

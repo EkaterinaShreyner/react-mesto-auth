@@ -8,7 +8,6 @@ import EditProfilePopup from "./EditProfilePopup.js";
 import EditAvatarPopup from "./EditAvatarPopup.js";
 import PopupConfirm from "./PopupConfirm.js";
 import AddPlacePopup from "./AddPlacePopup.js";
-import InfoTooltip from "./InfoTooltip.js";
 import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import Register from "./Register.js";
@@ -28,7 +27,6 @@ function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isPopupConfirmOpen, setIsPopupConfirmOpen] = useState(false);
-  const [isPopupTooltip, setIsPopupTooltip] =useState(false);
 
   // выбранная карточка
   const [selectedCard, setSelectedCard] = useState(null);
@@ -64,8 +62,6 @@ function App() {
     if (localStorage.getItem("token")) {
       const token = localStorage.getItem("token");
       mestoAuth.getContent(token)
-    // const token = localStorage.getItem("token");
-    // mestoAuth.getContent(token)
       .then((res) => {
         console.log(res)
         if (res) {
@@ -92,7 +88,7 @@ function App() {
   //   return <Loading />
   // }
 
-  function handleExit() {
+  function onSignOut() {
     localStorage.removeItem("token");
     setIsLoggedIn(false);
     setUserEmail();
@@ -116,7 +112,6 @@ function App() {
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
     setIsPopupConfirmOpen(false)
-    setIsPopupTooltip(false)
     setSelectedCard(null);
   }
 
@@ -214,7 +209,7 @@ function App() {
           <Header
             isLoggedIn={isLoggedIn}
             userEmail={userEmail}
-            onExit={handleExit}
+            onSignOut={onSignOut}
           />
           <Routes>
             <Route path="/sign-up" element={<Register />} />
@@ -277,10 +272,6 @@ function App() {
             onClose={closeAllPopups}
             closeOverlay={setSelectedCard}
           />
-          <InfoTooltip
-          isOpen={isPopupTooltip}
-          onClose={closeAllPopups}
-          />
         </CurrentUserContext.Provider>
       </div>
     </div>
@@ -288,18 +279,3 @@ function App() {
 }
 
 export default App;
-
-// element={
-              //   <>
-              //   <Main  
-              //     onEditProfile={handleEditProfileClick}
-              //     onAddPlace={handleAddPlaceClick}
-              //     onEditAvatar={handleEditAvatarClick}
-              //     onCardClick={handleCardClick}
-              //     cards={cards}
-              //     onCardLike={handleCardLike}
-              //     onCardDelete={handleCardDelete}
-              //   />
-              //   <Footer />
-              //   </>
-              // }

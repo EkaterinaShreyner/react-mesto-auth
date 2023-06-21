@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import * as mestoAuth from "../utils/MestoAuth.js";
 import InfoTooltip from "./InfoTooltip.js";
 import icon from "../image/icon.svg";
+import union from "../image/Union.svg";
 
 function Register(props) {
 
@@ -12,6 +13,7 @@ function Register(props) {
   });
 
   const [isPopupTooltip, setIsPopupTooltip] = useState(false);
+  const [successRegister, setSuccessRegister] =useState();
 
   const navigate = useNavigate();
 
@@ -23,16 +25,18 @@ function Register(props) {
     })
   }
 
-  function handleSubmit(evt) {
+  function onRegister(evt) {
     evt.preventDefault();
     const {email, password} = formValue;
     mestoAuth.register(email, password)
       .then((res) => {
+        setSuccessRegister(true)
         setIsPopupTooltip(true)
-        navigate('/sign-in', {replace: true});
         console.log(res);
       })
       .catch((err) => {
+        setSuccessRegister(false)
+        setIsPopupTooltip(true)
         console.error(`Ошибка регистрации: ${err}`)
       })
   }
@@ -40,7 +44,7 @@ function Register(props) {
   return(
     <>
       <div className="auth">
-        <form className="auth__form" name="form-register" onSubmit={handleSubmit}>
+        <form className="auth__form" name="form-register" onSubmit={onRegister}>
           <h2 className="auth__title">Регистрация</h2>
           <input
             className="auth__input"
@@ -74,9 +78,16 @@ function Register(props) {
           <Link className="auth__link" to="/sign-in">Войти</Link>
         </p>
         <InfoTooltip
-          response="Вы успешно зарегистрировались"
-          image={icon}
+          response={successRegister ? "Вы успешно зарегистрировались." : "Что-то пошло не так! Попробуйте еще раз."}
+          image={successRegister ? icon : union}
+          alt={successRegister ? "Иконка Успешно" : "Иконка Ошибка"}
           isOpen={isPopupTooltip}
+          onClose={(() => {
+            setIsPopupTooltip(false);
+            if (successRegister) {
+              navigate('/sign-in', {replace: true});
+            }
+          })}
         />
     </div>
   </>

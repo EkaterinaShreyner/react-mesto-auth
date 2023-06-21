@@ -5,8 +5,8 @@ import { Link, Route, Routes } from 'react-router-dom';
 
 function Header(props) {
 
-  function handleExit() {
-    props.onExit();
+  function onSignOut() {
+    props.onSignOut();
   }
 
   return (
@@ -34,11 +34,10 @@ function Header(props) {
           element={
             <div className="header__container">
               <p className="header__imail">{props.userEmail}</p>
-              {/* <Link className="header__button header__button_type_exit" onClick={handleExit} to="/sign-in">Выйти</Link> */}
               <Link
                 className="header__button header__button_type_exit"
                 type="button"
-                onClick={handleExit}
+                onClick={onSignOut}
                 to="sign-in"
               >
                 Выйти
