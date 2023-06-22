@@ -14,6 +14,7 @@ import Register from "./Register.js";
 import Login from "./Login.js";
 import ProtectedRoute from "./ProtectedRoute.js";
 import * as mestoAuth from "../utils/MestoAuth.js";
+// import MobileMenu from "./MobileMenu.js";
 // import Loading from "./Loading.js";
 
 

@@ -1,5 +1,9 @@
 .header__menu-burger {
   display: none;
+  width: 24px;
+  height: 20px;
+  position: relative;
+  border: 0;
 }
 
 @media screen and (max-width: 460px) {
