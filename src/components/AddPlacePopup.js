@@ -1,10 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PopupWithForm from "./PopupWithForm"
 
 function AddPlacePopup(props) {
 
   const [namePlace, setNamePlace] = useState('')
   const [link, setLink] = useState('')
+
+  // Очистка формы после добавления новой карточки
+  // происходит только после успешной отправки запроса.
+  useEffect(() => {
+    setNamePlace('')
+    setLink('')
+  }, [props.isOpen])
 
   function submitForm(evt) {
     evt.preventDefault();
