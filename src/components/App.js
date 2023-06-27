@@ -9,7 +9,7 @@ import EditAvatarPopup from "./EditAvatarPopup.js";
 import PopupConfirm from "./PopupConfirm.js";
 import AddPlacePopup from "./AddPlacePopup.js";
 import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import Register from "./Register.js";
 import Login from "./Login.js";
 import ProtectedRoute from "./ProtectedRoute.js";
@@ -34,7 +34,7 @@ function App() {
 
   // данные пользователя
   const [currentUser, setCurrentUser] = useState({});
-  const [userEmail, setUserEmail] = useState();
+  const [userEmail, setUserEmail] = useState('');
 
   // массив карточек
   const [cards, setCards] = useState([]);
@@ -46,15 +46,18 @@ function App() {
   const [selectedConfirmDeleteCard, setSelectedConfirmDeleteCard] = useState(null);
 
   useEffect(() => {
-    Promise.all([api.getUserInfo(), api.getCards()])
-      .then(([dataUser, cards]) => {
-        setCurrentUser(dataUser);
-        setCards(cards);
-      })
-      .catch((err) => {
-        console.error(`Ошибка ${err}`);
-      });
-  }, []);
+    if (isLoggedIn) {
+      Promise.all([api.getUserInfo(), api.getCards()])
+        .then(([dataUser, cards]) => {
+          setCurrentUser(dataUser);
+          setCards(cards);
+        })
+        .catch((err) => {
+          console.error(`Ошибка ${err}`);
+        });
+    }
+    
+  }, [isLoggedIn]);
 
   const navigate = useNavigate();
 
@@ -92,7 +95,7 @@ function App() {
   function onSignOut() {
     localStorage.removeItem("token");
     setIsLoggedIn(false);
-    setUserEmail();
+    setUserEmail("");
     navigate("/sign-in", {replace: true})
   }
 
@@ -218,7 +221,9 @@ function App() {
               path="/sign-in"
               element={
                 <Login
+                  userEmail={(email) => setUserEmail(email)}
                   handleLogin={() => setIsLoggedIn(true)}
+                  
                 />
               }
             />
@@ -239,6 +244,9 @@ function App() {
                   <Footer />
                 </>
               }
+            />
+            <Route path="*"
+              element={!isLoggedIn ? <Navigate to="/sign-in" /> : <Navigate to="/" />}
             />
           </Routes>
           <EditProfilePopup

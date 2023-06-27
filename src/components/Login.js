@@ -27,10 +27,9 @@ function Login(props) {
     mestoAuth.authorize(email, password)
       .then((res) => {
         localStorage.setItem("token", res.token);
-        console.log(res.token)
+        props.userEmail(email);
         props.handleLogin();   
         navigate("/");
-        window.location.reload();
       })
       .catch((err) => {
         console.error(`Ошибка авторизации: ${err}`)

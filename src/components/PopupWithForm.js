@@ -6,18 +6,25 @@ function PopupWithForm(props) {
     props.closeOverlay(false)
   }
 
-  function handleCloseByEsc(evt) {
-    if (evt.key === 'Escape') {
-      props.onClose(false)
-    }
-  }
+  // function handleCloseByEsc(evt) {
+  //   if (evt.key === 'Escape') {
+  //     props.onClose(false)
+  //   }
+  // }
 
-  useEffect(() =>{
-    document.addEventListener('keydown', handleCloseByEsc)
+  useEffect(() => {
+    if (!props.isOpen) return;
+
+    function handleCloseByEsc(evt) {
+      if (evt.key === 'Escape') {
+        props.onClose(false)
+      }
+    }
+    document.addEventListener('keydown', handleCloseByEsc);
     return() => {
       document.removeEventListener('keydown', handleCloseByEsc)
     }
-  }, [])
+  }, [props.isOpen]);
 
   const popupOpened = props.isOpen ? "popup_opened" : "";
 
