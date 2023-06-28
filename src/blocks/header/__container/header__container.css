@@ -4,8 +4,8 @@
   gap: 24px;
 }
 
-/* @media screen and (max-width: 570px) {
+@media screen and (max-width: 470px) {
   .header__container {
     display: none;
   }
-} */
+}

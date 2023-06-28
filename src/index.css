@@ -54,6 +54,9 @@
 @import url(./blocks/auth/__confirm/auth__confirm.css);
 @import url(./blocks/auth/__link/auth__link.css);
 @import url(./blocks/mobile-menu/mobile-menu.css);
+@import url(./blocks/mobile-menu/_opened/mobile-menu_opened.css);
 @import url(./blocks/mobile-menu/__email/mobile-menu__email.css);
 @import url(./blocks/mobile-menu/__button/mobile-menu__button.css);
+@import url(./blocks/header/__menu-burger/header__menu-burger.css);
+@import url(./blocks/header/__menu-burger-item/header__menu-burger-item.css);
 @import url(./blocks/loading/__text/loading__text.css);

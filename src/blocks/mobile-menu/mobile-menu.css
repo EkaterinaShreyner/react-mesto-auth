@@ -6,8 +6,8 @@
   border-bottom: 1px solid #545454;
 }
 
-@media screen and (max-width: 570px) {
+/* @media screen and (max-width: 470px) {
   .mobile-menu {
-    /* display: flex; */
+    display: flex;
   }
-}
+} */

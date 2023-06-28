@@ -14,8 +14,6 @@ import Register from "./Register.js";
 import Login from "./Login.js";
 import ProtectedRoute from "./ProtectedRoute.js";
 import * as mestoAuth from "../utils/MestoAuth.js";
-// import MobileMenu from "./MobileMenu.js";
-// import Loading from "./Loading.js";
 
 
 function App() {
@@ -35,6 +33,9 @@ function App() {
   // данные пользователя
   const [currentUser, setCurrentUser] = useState({});
   const [userEmail, setUserEmail] = useState('');
+
+  // мобильное меню
+  const [isMobileMenu, setIsMobileMenu] = useState(false);
 
   // массив карточек
   const [cards, setCards] = useState([]);
@@ -67,7 +68,6 @@ function App() {
       const token = localStorage.getItem("token");
       mestoAuth.getContent(token)
       .then((res) => {
-        console.log(res)
         if (res) {
           setUserEmail(res.data.email) // получаем значение переменной состояния после сабмита
           setIsLoggedIn(true);
@@ -206,6 +206,12 @@ function App() {
       })
   }
 
+  function handleMobileMenu() {
+    setIsMobileMenu(!isMobileMenu)
+    console.log(isMobileMenu)
+    
+  }
+
   return (
     <div className="root">
       <div className="page">
@@ -214,6 +220,9 @@ function App() {
             isLoggedIn={isLoggedIn}
             userEmail={userEmail}
             onSignOut={onSignOut}
+            isMobileMenu={isMobileMenu}
+            handleMobileMenu={handleMobileMenu}
+    
           />
           <Routes>
             <Route path="/sign-up" element={<Register />} />
