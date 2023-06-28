@@ -15,7 +15,6 @@ import Login from "./Login.js";
 import ProtectedRoute from "./ProtectedRoute.js";
 import * as mestoAuth from "../utils/MestoAuth.js";
 
-
 function App() {
 
   // авторизованный пользователь
